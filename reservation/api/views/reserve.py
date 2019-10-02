@@ -10,7 +10,7 @@ schema = {
     'parking_space_number': {'type': 'string', 'required': True}   
 }
 
-# for test purpose --> remember to delete
+
 @csrf_exempt
 @validate_params(schema=schema)
 def reserve_parking(request):

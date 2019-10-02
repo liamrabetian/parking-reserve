@@ -15,10 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from reservation.api.views.login_user import login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', login, name='login-view'),
-    path('reservation/', include('reservation.api.urls'))
+    path('reservation/', include('reservation.api.urls')),
+    path('customers/', include('customer.api.urls'))
 ]
