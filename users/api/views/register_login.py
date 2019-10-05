@@ -2,7 +2,7 @@ import json
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.password_validation import validate_password
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, logout, authenticate
 from django.http import JsonResponse
 from django.core.exceptions import ValidationError
 
@@ -43,3 +43,9 @@ def user_login(request):
         return JsonResponse({"result": "you are now logged in!"})
     else:
         return JsonResponse({"result": "Wrong username or password!"})
+
+
+@csrf_exempt
+def user_logout(request):
+    logout(request)
+    return JsonResponse({"result": "You are now logged out!"})
