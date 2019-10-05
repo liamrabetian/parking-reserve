@@ -1,5 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+import qrcode
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import sys
+
 
 
 class Floor(models.Model):
@@ -22,20 +27,22 @@ class Reservation(models.Model):
     qr_code = models.ImageField(upload_to='qrcode', blank=True, null=True)
 
 
-    def get_absolute_url(self):
-           return reverse('reserve-parking', args=[str(self.id)])
+    # def get_absolute_url(self):
+    #        return reverse('reserve-parking', args=[str(self.id)])
 
-    def save(self):
-        qr = qrcode.QRCode(
-        version=1,
-        error_correction=qrcode.constants.ERROR_CORRECT_L,
-        box_size=10,
-        border=4,
-        )
-        qr.add_data(self.get_absolute_url)
-        qr.make(fit=True)
-        img = qr.make_image(fill_color="black", back_color="white")
-        buffer = BytesIO()
-        img.save(buffer, format='PNG')
-        return InMemoryUploadedFile(buffer, 'qrcode', None,
-                                    'image/png', sys.getsizeof(buffer), None)
+    # def save(self):
+    #     qr = qrcode.QRCode(
+    #     version=1,
+    #     error_correction=qrcode.constants.ERROR_CORRECT_L,
+    #     box_size=10,
+    #     border=4,
+    #     )
+    #     qr.add_data(self.get_absolute_url)
+    #     qr.make(fit=True)
+    #     img = qr.make_image(fill_color="black", back_color="white")
+    #     buffer = BytesIO()
+    #     img.save(buffer, format='PNG')
+    #     filename = f'events-{self.id}.png'
+    #     file_buffer = InMemoryUploadedFile(buffer, 'qrcode', None,
+    #                                 'image/png', sys.getsizeof(buffer), None)
+    #     self.qr_code.save(filename, file_buffer)

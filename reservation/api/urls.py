@@ -6,8 +6,8 @@ from reservation.api.views.create_parking import create_parking
 
 
 urlpatterns = [
-    path('', reserve_parking, name='reserve-parking'),
+    path('reserve', reserve_parking, name='reserve-parking'),
     path('available_parkings/', available_parkings, name='available-parkings'),
     path('exit/', exit_parking, name='exit'),
-    path('create_parking', create_parking, name='create-parking')
+    path('create', create_parking, name='create-parking')
 ]

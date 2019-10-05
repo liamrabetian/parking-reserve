@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import login, authenticate
 from django.http import JsonResponse
+from django.core.exceptions import ValidationError
 
 
 
@@ -11,8 +12,10 @@ from django.http import JsonResponse
 def register(request):   
     request_body = request.body.decode('utf-8')
     data = json.loads(request_body)
-    
-    validate_password(data.get('password'))
+    try:
+        validate_password(data.get('password'))
+    except ValidationError as err:
+        return JsonResponse({"result": "This password is too common!"})
     user = User.objects.create_user(
         data.get('username'),
         data.get('email'),
