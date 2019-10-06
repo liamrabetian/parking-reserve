@@ -9,10 +9,17 @@ import sys
 class Floor(models.Model):
     floor_number = models.PositiveIntegerField()
 
+    def __str__(self):
+        floor_number = str(self.floor_number)
+        return floor_number
 
 class ParkingSlot(models.Model):
     floor = models.ForeignKey(Floor, on_delete=models.CASCADE)
     slot_number = models.PositiveIntegerField()
+
+    def __str__(self):
+        slot_number = str(self.slot_number)
+        return slot_number
 
 
 class Reservation(models.Model):
@@ -24,6 +31,10 @@ class Reservation(models.Model):
     exit_date = models.DateTimeField(blank=True, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     qr_code = models.ImageField(upload_to='qrcode', blank=True, null=True)
+
+    def __str__(self):
+        created_date = str(self.created_date)
+        return created_date
 
 
     # def get_absolute_url(self):
