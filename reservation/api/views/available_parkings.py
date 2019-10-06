@@ -6,8 +6,8 @@ from reservation.models import Reservation, ParkingSlot
 @csrf_exempt
 def available_parkings(request):
     available_parkings = list()
-    reserved_parking_slots =  Reservation.objects.all().values_list('parking_slot_id', flat=True)
-    all_parking_slots = ParkingSlot.objects.all().values_list('id', flat=True)
+    reserved_parking_slots =  Reservation.objects.values_list('parking_slot_id', flat=True)
+    all_parking_slots = ParkingSlot.objects.values_list('id', flat=True)
 
     for slot in list(all_parking_slots):
         if slot in list(reserved_parking_slots):
