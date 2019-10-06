@@ -25,8 +25,8 @@ class ParkingSlot(models.Model):
 
 
 class Reservation(models.Model):
-    start_date = models.DateTimeField()
-    finish_date = models.DateTimeField()
+    start_date = models.DateTimeField(blank=True, null=True)
+    finish_date = models.DateTimeField(blank=True, null=True)
     parking_slot = models.ForeignKey(ParkingSlot, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     enter_date = models.DateTimeField(auto_now_add=True)
