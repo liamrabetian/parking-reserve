@@ -4,6 +4,8 @@ import qrcode
 from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import sys
+from django.urls import reverse
+import os
 
 
 class Floor(models.Model):
@@ -40,17 +42,18 @@ class Reservation(models.Model):
     # def get_absolute_url(self):
     #        return reverse('reserve-parking', args=[str(self.id)])
 
-    # def save(self):
-    #     qr = qrcode.QRCode(
-    #     version=1,
-    #     error_correction=qrcode.constants.ERROR_CORRECT_L,
-    #     box_size=10,
-    #     border=4,
-    #     )
-    #     qr.add_data(self.get_absolute_url)
-    #     qr.make(fit=True)
-    #     img = qr.make_image(fill_color="black", back_color="white")
-    #     buffer = BytesIO()
-    #     img.save(buffer, format='PNG')
-    #     return InMemoryUploadedFile(buffer, 'qrcode', None,
-    #                                 'image/png', sys.getsizeof(buffer), None)
+    def create_qrcode(self):
+        qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+        )
+        qr.add_data(self.pk)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+        img.save(f'{os.getcwd()}/qrcode/{self.pk}.png')
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.create_qrcode()
