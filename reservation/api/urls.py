@@ -5,6 +5,7 @@ from reservation.api.views.exit_parking import exit_parking
 from reservation.api.views.create_parking import create_parking
 from reservation.api.views.cancel_reserve import cancel_reserve
 from reservation.api.views.active_reservations import active_reservations
+from reservation.api.views.enter_parking import enter_parking
 
 
 urlpatterns = [
@@ -13,5 +14,6 @@ urlpatterns = [
     path('exit', exit_parking, name='exit'),
     path('create', create_parking, name='create-parking'),
     path('cancel', cancel_reserve, name='cancel'),
-    path('active_reservations', active_reservations, name='active-reservations')
+    path('active_reservations', active_reservations, name='active-reservations'),
+    path('enter_parking', enter_parking, name='enter-parking')
 ]

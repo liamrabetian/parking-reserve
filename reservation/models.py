@@ -29,7 +29,7 @@ class Reservation(models.Model):
     finish_date = models.DateTimeField(blank=True, null=True)
     parking_slot = models.ForeignKey(ParkingSlot, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    enter_date = models.DateTimeField(auto_now_add=True)
+    enter_date = models.DateTimeField(blank=True, null=True)
     exit_date = models.DateTimeField(blank=True, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     qr_code = models.ImageField(upload_to='qrcode', blank=True, null=True)
