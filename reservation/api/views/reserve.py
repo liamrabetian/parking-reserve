@@ -24,6 +24,16 @@ def reserve_parking(request):
         return JsonResponse({"result": "Dates overlaps. Try other dates and / or parking space."})
     else:
         data['user_id'] = current_user.id
+        previous_slot_reserve = Reservation.objects.filter(
+            parking_slot_id=data.get('parking_slot_id'),
+            start_date=None,
+            finish_date=None,
+            exit_date__isnull=False
+        )
+        if previous_slot_reserve:
+            data['exit_date'] = None
+            previous_slot_reserve.update(**data)
+            return JsonResponse(data={"result": "Reservation done!"})
         reserve = Reservation(**data)
         reserve.save()
         return JsonResponse(data={"result": "Reservation done!"})
