@@ -3,6 +3,8 @@ from django.http import JsonResponse
 from reservation.models import Reservation, ParkingSlot
 from reservation.decorators.validate_params import validate_params
 from django.views.decorators.csrf import csrf_exempt
+from .helpers.help_reserve import check_previous_reserve
+
 
 schema = {
     'start_date': {'type': 'string', 'required': True},
@@ -10,19 +12,6 @@ schema = {
     'parking_slot_id': {'type': ['string', 'integer'], 'required': False}   
 }
 
-
-def check_previous_reserve(model, data):
-    previous_slot_reserve = model.objects.filter(
-            parking_slot_id=data.get('parking_slot_id'),
-            start_date=None,
-            finish_date=None,
-            exit_date__isnull=False
-        )
-    if previous_slot_reserve:
-        data['exit_date'] = None
-        previous_slot_reserve.update(**data)
-        return 
-    model(**data).save()
 
 @csrf_exempt
 @validate_params(schema=schema)
