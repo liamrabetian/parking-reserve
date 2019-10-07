@@ -11,10 +11,15 @@ def create_parking(request):
     floor = data.get('floor')
     slots = data.get('slots')
     
+    previous_floor = Floor.objects.filter(
+        floor_number=floor
+    )
+    if previous_floor:
+        previous_floor.delete()
     f = Floor(floor_number=floor)
     f.save()
 
-    f = Floor.objects.all().last()
+    f = Floor.objects.last()
     for slot in slots:
         p = ParkingSlot(floor=f, slot_number=slot)
         p.save()
