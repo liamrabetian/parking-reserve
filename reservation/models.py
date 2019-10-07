@@ -37,11 +37,9 @@ class Reservation(models.Model):
     def __str__(self):
         created_date = str(self.created_date)
         return created_date
+        
 
-
-    # def get_absolute_url(self):
-    #        return reverse('reserve-parking', args=[str(self.id)])
-
+    # create a qrcode unique to the reservation object
     def create_qrcode(self):
         qr = qrcode.QRCode(
         version=1,

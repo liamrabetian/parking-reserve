@@ -9,17 +9,18 @@ from django.utils import timezone
 def exit_parking(request): 
     request_body = request.body.decode('utf-8')
     data = json.loads(request_body)
+    new_data = dict()
     parking_slot = data.get('parking_slot_id')
     current_user = request.user
     if not current_user.is_authenticated:
         return JsonResponse({"result": "you must login first"})
-    try:
-        reserved_parking_slot = Reservation.objects.filter(user_id=current_user.id, 
-                                                           parking_slot_id=parking_slot).last()                                               
-        reserved_parking_slot.start_date = None
-        reserved_parking_slot.finish_date = None                                                   
-        reserved_parking_slot.exit_date = timezone.now()
-        reserved_parking_slot.save()
-        return JsonResponse({"result": "your exit has been recorded!"})
-    except Exception:
-        return JsonResponse({"result": "the parking lot isn't reserved by you!"})
+
+    reserved_parking_slot = Reservation.objects.filter(user_id=current_user.id, 
+                                                       parking_slot_id=parking_slot, exit_date__isnull=True)
+    if not reserved_parking_slot:
+        return JsonResponse({"result": "the parking lot isn't reserved by you!"})  
+    new_data['start_date'] = None
+    new_data['finish_date'] = None
+    new_data['exit_date'] = timezone.now()
+    reserved_parking_slot.update(**new_data)                                             
+    return JsonResponse({"result": "your exit has been recorded!"})
