@@ -7,10 +7,34 @@ from django.utils import timezone
 
 @csrf_exempt
 def available_parkings(request):
+    """
+    two ways to see the available parkings 
+    1 - user requests to see the available parkings in the chosen time -> post request
+    2 - user requests to just see the available parkings right now  -> get request
+    """
     available_parkings = list()
     reserved_parking_slots =  Reservation.objects.values_list('parking_slot_id', flat=True)
     all_parking_slots = ParkingSlot.objects.values_list('id', flat=True)
-
+    # see availbale parkings in the chosen time range
+    if request.method == 'POST':
+        import json
+        request_body = request.body.decode('utf-8')
+        data = json.loads(request_body)
+        start_date = data.get('start_date')
+        finish_date = data.get('finish_date')
+        for slot in list(all_parking_slots):
+            if slot in list(reserved_parking_slots):
+                if Reservation.objects.filter(Q(parking_slot_id=slot,
+                                                start_date__range=[start_date, finish_date]) |
+                                              Q(parking_slot_id=slot,
+                                                finish_date__range=[start_date, finish_date])).exists():
+                    continue
+                else:
+                    available_parkings.append(slot)
+            else:
+                available_parkings.append(slot)
+        if available_parkings:
+            return JsonResponse({"result": available_parkings})
     for slot in list(all_parking_slots):
         if slot in list(reserved_parking_slots):
              if Reservation.objects.filter(Q(parking_slot_id=slot, exit_date__isnull=False) | 
