@@ -45,6 +45,8 @@ def reserve_parking(request):
             else:
                 available_parking = slot
                 break
+        else:
+            return JsonResponse({"result": "No parking is available for reserve right now!"})
         data['parking_slot_id'] = available_parking
         # the function checks if there's already a reservation object with this parking slot in db
         check_previous_reserve(Reservation, data)
