@@ -9,19 +9,17 @@ import os
 
 
 class Floor(models.Model):
-    floor_number = models.PositiveIntegerField()
+    floor_number = models.CharField(max_length=2)
 
     def __str__(self):
-        floor_number = str(self.floor_number)
-        return floor_number
+        return self.floor_number
 
 class ParkingSlot(models.Model):
     floor = models.ForeignKey(Floor, on_delete=models.CASCADE)
-    slot_number = models.PositiveIntegerField()
+    slot_number = models.CharField(max_length=2)
 
     def __str__(self):
-        slot_number = str(self.slot_number)
-        return slot_number
+        return self.slot_number
 
 
 class Reservation(models.Model):
