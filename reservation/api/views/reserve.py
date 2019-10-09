@@ -18,6 +18,11 @@ schema = {
 @csrf_exempt
 @validate_params(schema=schema)
 def reserve_parking(request):
+    """Two ways to reserve a parking.
+
+    User can choose a desired parking spot.
+    User can just request for the nearest parking spot to be reserved.
+    """
     request_body = request.body.decode('utf-8')
     data = json.loads(request_body)
     current_user = request.user

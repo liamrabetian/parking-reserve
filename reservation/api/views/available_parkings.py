@@ -7,10 +7,10 @@ from django.utils import timezone
 
 @csrf_exempt
 def available_parkings(request):
-    """
-    two ways to see the available parkings 
-    1 - user requests to see the available parkings in the chosen time -> post request
-    2 - user requests to just see the available parkings right now  -> get request
+    """Two ways to see the available parkings.
+
+    User requests to see the available parkings in a time range.
+    User requests to just see the available parkings right now.
     """
     available_parkings = list()
     reserved_parking_slots =  Reservation.objects.values_list('parking_slot_id', flat=True)
