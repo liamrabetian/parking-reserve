@@ -1,6 +1,6 @@
 
 
-def check_previous_reserve(model, data):
+def check_previous_reserve(model: object, data: dict) -> None:
     previous_slot_reserve = model.objects.filter(
             parking_slot_id=data.get('parking_slot_id'),
             start_date=None,
