@@ -14,7 +14,6 @@ schema = {
     'parking_slot_id': {'type': ['string', 'integer'], 'required': False}   
 }
 
-
 @csrf_exempt
 @validate_params(schema=schema)
 def reserve_parking(request):

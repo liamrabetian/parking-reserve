@@ -2,9 +2,17 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from reservation.models import Floor, ParkingSlot
 from django.http import JsonResponse
+from reservation.decorators.validate_params import validate_params
+
+
+schema = {
+    'floor': {'type': 'string', 'required': True},
+    'slots': {'type': 'list', 'required': True}
+}
 
 
 @csrf_exempt
+@validate_params(schema=schema)
 def create_parking(request): 
     request_body = request.body.decode('utf-8')
     data = json.loads(request_body)

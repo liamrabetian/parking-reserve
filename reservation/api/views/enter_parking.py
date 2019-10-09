@@ -4,9 +4,16 @@ import json
 from django.utils import timezone
 from django.http import JsonResponse
 from django.utils import timezone
+from reservation.decorators.validate_params import validate_params
+
+
+schema = {
+    'parking_slot_id': {'type': 'integer', 'required': True}   
+}
 
 
 @csrf_exempt
+@validate_params(schema=schema)
 def enter_parking(request):
     request_body = request.body.decode('utf-8')
     data = json.loads(request_body)

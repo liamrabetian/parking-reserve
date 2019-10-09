@@ -3,9 +3,17 @@ from django.http import JsonResponse
 from reservation.models import Reservation, ParkingSlot
 from django.db.models import Q
 from django.utils import timezone
+from reservation.decorators.validate_params import validate_params
 
+
+schema = {
+    'start_date': {'type': 'string', 'required': False},
+    'finish_date': {'type': 'string', 'required': False},
+    'parking_slot_id': {'type': 'integer', 'required': False}   
+}
 
 @csrf_exempt
+@validate_params(schema=schema)
 def available_parkings(request):
     """Two ways to see the available parkings.
 
