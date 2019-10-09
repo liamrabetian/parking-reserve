@@ -4,18 +4,16 @@ from reservation.models import Reservation
 from django.http import JsonResponse
 from reservation.decorators.validate_params import validate_params
 
-schema = {
-    'parking_slot_id': {'type': 'integer', 'required': True}   
-}
+schema = {"parking_slot_id": {"type": "integer", "required": True}}
 
 
 @csrf_exempt
 @validate_params(schema=schema)
 def cancel_reserve(request):
-    request_body = request.body.decode('utf-8')
+    request_body = request.body.decode("utf-8")
     data = json.loads(request_body)
 
-    parking_slot = data.get('parking_slot_id')
+    parking_slot = data.get("parking_slot_id")
     current_user = request.user
     if not current_user.is_authenticated:
         return JsonResponse({"result": "You must login first!"})

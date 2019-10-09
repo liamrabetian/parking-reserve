@@ -9,11 +9,12 @@ from reservation.api.views.enter_parking import enter_parking
 
 
 urlpatterns = [
-    path('reserve', reserve_parking, name='reserve-parking'),
-    path('available_parkings', available_parkings, name='available-parkings'),
-    path('exit', exit_parking, name='exit'),
-    path('create', create_parking, name='create-parking'),
-    path('cancel', cancel_reserve, name='cancel'),
-    path('active_reservations', active_reservations, name='active-reservations'),
-    path('enter_parking', enter_parking, name='enter-parking')
+    path("reserve", reserve_parking, name="reserve-parking"),
+    path("available_parkings", available_parkings, name="available-parkings"),
+    path("exit", exit_parking, name="exit"),
+    path("create", create_parking, name="create-parking"),
+    path("cancel", cancel_reserve, name="cancel"),
+    path("active_reservations", active_reservations,
+         name="active-reservations"),
+    path("enter_parking", enter_parking, name="enter-parking"),
 ]

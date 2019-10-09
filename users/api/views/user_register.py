@@ -7,24 +7,19 @@ from django.http import JsonResponse
 from django.core.exceptions import ValidationError
 
 
-
 @csrf_exempt
-def register(request):   
-    request_body = request.body.decode('utf-8')
+def register(request):
+    request_body = request.body.decode("utf-8")
     data = json.loads(request_body)
     try:
-        validate_password(data.get('password'))
+        validate_password(data.get("password"))
     except ValidationError:
         return JsonResponse({"result": "This password is too common!"})
-    try:    
+    try:
         user = User.objects.create_user(
-            data.get('username'),
-            data.get('email'),
-            data.get('password')
+            data.get("username"), data.get("email"), data.get("password")
         )
         login(request, user)
     except Exception:
         return JsonResponse({"result": "Username is already taken.choose another!"})
-    return JsonResponse(
-        {"result": "User Created"}
-    )
+    return JsonResponse({"result": "User Created"})
