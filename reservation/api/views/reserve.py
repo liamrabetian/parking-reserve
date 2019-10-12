@@ -1,6 +1,7 @@
 import json
 from django.http import JsonResponse
-from reservation.models import Reservation, ParkingSlot
+from reservation.models import Reservation
+from parking.models import ParkingSlot
 from reservation.decorators.validate_params import validate_params
 from django.views.decorators.csrf import csrf_exempt
 from .helpers.help_reserve import check_previous_reserve

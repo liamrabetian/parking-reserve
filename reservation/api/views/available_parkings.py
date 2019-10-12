@@ -1,6 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-from reservation.models import Reservation, ParkingSlot
+from reservation.models import Reservation
+from parking.models import ParkingSlot
 from django.db.models import Q
 from django.utils import timezone
 from reservation.decorators.validate_params import validate_params

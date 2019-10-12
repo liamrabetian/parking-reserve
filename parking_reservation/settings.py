@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'parking.apps.ParkingConfig',
     'users.apps.UsersConfig',
     'reservation.apps.ReservationConfig',
     'django.contrib.admin',
