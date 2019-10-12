@@ -82,8 +82,13 @@ def reserve_parking(request):
         )
     ).exists():
         return JsonResponse(
-            {"result": "Dates overlaps. Try other dates and / or parking space."}
+            {"result":
+             "Dates overlaps. Try other dates and / or parking space."}
         )
     else:
+        if not ParkingSlot.objects.filter(
+                id=data.get("parking_slot_id")).exists():
+            return JsonResponse({"result":
+                                 "The requested Parking slot doesn't exist!"})
         check_previous_reserve(Reservation, data)
         return JsonResponse(data={"result": "Reservation done!"})
