@@ -8,6 +8,7 @@ from reservation.api.views.active_reservations import active_reservations
 from reservation.api.views.enter_parking import enter_parking
 from reservation.api.views.user_active_reservations import user_active_reservations
 from reservation.api.views.user_inactive_reservations import user_inactive_reservations
+from reservation.api.views.helpers.help_active_reservations import forbiden_response
 
 
 urlpatterns = [
@@ -19,5 +20,6 @@ urlpatterns = [
     path("active_reservations", active_reservations, name="active-reservations"),
     path("enter_parking", enter_parking, name="enter-parking"),
     path("user_active_reservations", user_active_reservations, name="user-active-reservations"),
-    path("user_inactive_reservations", user_inactive_reservations, name="user-inactive-reservations")
+    path("user_inactive_reservations", user_inactive_reservations, name="user-inactive-reservations"),
+    path("forbiden_response/", forbiden_response, name="forbiden-response")
 ]

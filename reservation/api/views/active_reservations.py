@@ -1,8 +1,10 @@
 from reservation.models import Reservation
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import permission_required
 
 
+@permission_required("reservation.admin_role", login_url="forbiden_response/", raise_exception=False)
 @csrf_exempt
 def active_reservations(request):
     reservations = Reservation.objects.filter(
