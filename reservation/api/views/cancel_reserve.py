@@ -21,8 +21,11 @@ def cancel_reserve(request):
     try:
         instance = Reservation.objects.filter(
             user_id=current_user.id, parking_slot_id=parking_slot
-        )
+        ).first()
         if instance:
+            if instance.enter_date:
+                return JsonResponse({"result":
+                                     "You have already entered the parking!"})
             instance.delete()
             return JsonResponse({"result": "Reservation canceled!"})
         else:

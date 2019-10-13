@@ -163,3 +163,4 @@ dmypy.json
 # Pyre type checker
 # vs code 
 .vscode
+qrcode/
