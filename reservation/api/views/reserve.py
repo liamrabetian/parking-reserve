@@ -44,23 +44,19 @@ def reserve_parking(request):
     if "parking_slot_id" not in data:
         # retrieve all parking slots and check
         # if the parking slot is reserved in the next for loop
-        reserved_parking_slots = Reservation.objects.values_list(
-            "parking_slot_id", flat=True
+        reserved_parking_slots = (
+            Reservation.objects.filter(finish_date__gt=timezone.now())
+            .select_related("parking_slot")
+            .values_list("parking_slot_id", flat=True)
         )
         all_parking_slots = ParkingSlot.objects.values_list("id", flat=True)
 
         for slot in list(all_parking_slots):
-            if slot in list(reserved_parking_slots):
-                # check if the parking slot is still reserved or not
-                if Reservation.objects.filter(
-                    Q(parking_slot_id=slot, exit_date__isnull=False)
-                    | Q(parking_slot_id=slot, finish_date__lt=timezone.now())
-                ).exists():
-                    available_parking = slot
-                    break
-            else:
+            if slot not in list(reserved_parking_slots):
                 available_parking = slot
                 break
+            else:
+                continue
         else:
             return JsonResponse(
                 {"result": "No parking is available for reserve right now!"}
