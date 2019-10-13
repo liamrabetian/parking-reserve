@@ -9,8 +9,7 @@ from reservation.decorators.validate_params import validate_params
 
 schema = {
     "start_date": {"type": "string", "required": False},
-    "finish_date": {"type": "string", "required": False},
-    "parking_slot_id": {"type": "integer", "required": False},
+    "finish_date": {"type": "string", "required": False}
 }
 
 
@@ -23,10 +22,12 @@ def available_parkings(request):
     User requests to just see the available parkings right now.
     """
     available_parkings = list()
-    reserved_parking_slots = Reservation.objects.values_list(
-        "parking_slot_id", flat=True
+    reserved_parking_slots = (
+        Reservation.objects.filter(finish_date__gt=timezone.now())
+        .select_related("parking_slot")
+        .values_list("parking_slot_id", flat=True)
     )
-    all_parking_slots = ParkingSlot.objects.values_list("id", flat=True)
+    all_parking_slots = ParkingSlot.objects.values("id", "floor", "slot_number")
     # see availbale parkings in the chosen time range
     if request.method == "POST":
         import json
@@ -36,12 +37,14 @@ def available_parkings(request):
         start_date = data.get("start_date")
         finish_date = data.get("finish_date")
         for slot in list(all_parking_slots):
-            if slot in list(reserved_parking_slots):
+            if slot.get("id") in list(reserved_parking_slots):
                 if Reservation.objects.filter(
-                    Q(parking_slot_id=slot,
-                      start_date__range=[start_date, finish_date])
+                    Q(
+                        parking_slot_id=slot.get("id"),
+                        start_date__range=[start_date, finish_date],
+                    )
                     | Q(
-                        parking_slot_id=slot,
+                        parking_slot_id=slot.get("id"),
                         finish_date__range=[start_date, finish_date],
                     )
                 ).exists():
@@ -52,18 +55,18 @@ def available_parkings(request):
                 available_parkings.append(slot)
         if available_parkings:
             return JsonResponse({"result": available_parkings})
-    for slot in list(all_parking_slots):
-        if slot in list(reserved_parking_slots):
-            if Reservation.objects.filter(
-                Q(parking_slot_id=slot, exit_date__isnull=False)
-                | Q(parking_slot_id=slot, finish_date__lt=timezone.now())
-            ).exists():
-                available_parkings.append(slot)
         else:
+            return JsonResponse(
+                {"result": "No parking is available in this time range"}
+            )
+    for slot in list(all_parking_slots):
+        if slot.get("id") not in list(reserved_parking_slots):
             available_parkings.append(slot)
+        else:
+            continue
 
     if available_parkings:
-        return JsonResponse({"result": available_parkings})
+        return JsonResponse({"result": list(available_parkings)})
     else:
         return JsonResponse(
             {"result": "no available parkings at this moment!"})
