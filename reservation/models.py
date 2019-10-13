@@ -15,6 +15,11 @@ class Reservation(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     qr_code = models.ImageField(upload_to="qrcode", blank=True, null=True)
 
+    class Meta:
+        permissions = (
+            ("admin_role", "has admin role permissions"),
+        )
+
     def __str__(self):
         created_date = str(self.created_date)
         return created_date
