@@ -67,24 +67,17 @@ def reserve_parking(request):
         check_previous_reserve(Reservation, data)
         return JsonResponse(data={"result": "Reservation done!"})
 
+    if not ParkingSlot.objects.filter(id=data.get("parking_slot_id")).exists():
+        return JsonResponse({"result": "The requested Parking slot doesn't exist!"})
+
     if Reservation.objects.filter(
-        Q(
-            parking_slot_id=data.get("parking_slot_id"),
-            start_date__range=[start_date, finish_date],
-        )
-        | Q(
-            parking_slot_id=data.get("parking_slot_id"),
-            finish_date__range=[start_date, finish_date],
-        )
+        Q(parking_slot_id=data.get("parking_slot_id"))
+        & Q(start_date__range=[start_date, finish_date])
+        | Q(finish_date__range=[start_date, finish_date])
     ).exists():
         return JsonResponse(
-            {"result":
-             "Dates overlaps. Try other dates and / or parking space."}
+            {"result": "Dates overlaps. Try other dates and / or parking space."}
         )
     else:
-        if not ParkingSlot.objects.filter(
-                id=data.get("parking_slot_id")).exists():
-            return JsonResponse({"result":
-                                 "The requested Parking slot doesn't exist!"})
         check_previous_reserve(Reservation, data)
         return JsonResponse(data={"result": "Reservation done!"})

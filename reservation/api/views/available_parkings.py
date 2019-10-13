@@ -39,14 +39,9 @@ def available_parkings(request):
         for slot in list(all_parking_slots):
             if slot.get("id") in list(reserved_parking_slots):
                 if Reservation.objects.filter(
-                    Q(
-                        parking_slot_id=slot.get("id"),
-                        start_date__range=[start_date, finish_date],
-                    )
-                    | Q(
-                        parking_slot_id=slot.get("id"),
-                        finish_date__range=[start_date, finish_date],
-                    )
+                    Q(parking_slot_id=slot.get("id"))
+                    & Q(start_date__range=[start_date, finish_date])
+                    | Q(finish_date__range=[start_date, finish_date])
                 ).exists():
                     continue
                 else:
@@ -68,5 +63,4 @@ def available_parkings(request):
     if available_parkings:
         return JsonResponse({"result": list(available_parkings)})
     else:
-        return JsonResponse(
-            {"result": "no available parkings at this moment!"})
+        return JsonResponse({"result": "no available parkings at this moment!"})
