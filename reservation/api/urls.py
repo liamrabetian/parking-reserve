@@ -6,6 +6,7 @@ from reservation.api.views.create_parking import create_parking
 from reservation.api.views.cancel_reserve import cancel_reserve
 from reservation.api.views.active_reservations import active_reservations
 from reservation.api.views.enter_parking import enter_parking
+from reservation.api.views.user_active_reservations import user_active_reservations
 
 
 urlpatterns = [
@@ -17,4 +18,5 @@ urlpatterns = [
     path("active_reservations", active_reservations,
          name="active-reservations"),
     path("enter_parking", enter_parking, name="enter-parking"),
+    path("user_active_reservations", user_active_reservations, name="user-active-reservations")
 ]
