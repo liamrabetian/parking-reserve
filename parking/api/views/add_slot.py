@@ -17,4 +17,7 @@ def add_slot(request):
         )
         return JsonResponse({"result": "Parking Slots added"}, status=200)
     except Exception:
-        return JsonResponse({"result": "This floor doesn't exist!"}, status=400)
+        return JsonResponse(
+            {"result": "This floor doesn't exist or these parking slots already exist!"},
+            status=400,
+        )
