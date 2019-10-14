@@ -72,8 +72,10 @@ def reserve_parking(request):
 
     if Reservation.objects.filter(
         Q(parking_slot_id=data.get("parking_slot_id"))
-        & Q(start_date__range=[start_date, finish_date])
-        | Q(finish_date__range=[start_date, finish_date])
+        & (
+            Q(start_date__range=[start_date, finish_date])
+            | Q(finish_date__range=[start_date, finish_date])
+        )
     ).exists():
         return JsonResponse(
             {"result": "Dates overlaps. Try other dates and / or parking space."}

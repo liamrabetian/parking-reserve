@@ -9,7 +9,7 @@ from reservation.decorators.validate_params import validate_params
 
 schema = {
     "start_date": {"type": "string", "required": False},
-    "finish_date": {"type": "string", "required": False}
+    "finish_date": {"type": "string", "required": False},
 }
 
 
@@ -40,8 +40,10 @@ def available_parkings(request):
             if slot.get("id") in list(reserved_parking_slots):
                 if Reservation.objects.filter(
                     Q(parking_slot_id=slot.get("id"))
-                    & Q(start_date__range=[start_date, finish_date])
-                    | Q(finish_date__range=[start_date, finish_date])
+                    & (
+                        Q(start_date__range=[start_date, finish_date])
+                        | Q(finish_date__range=[start_date, finish_date])
+                    )
                 ).exists():
                     continue
                 else:

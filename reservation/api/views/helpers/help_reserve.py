@@ -1,8 +1,8 @@
-from django.core.exceptions import ObjectDoesNotExist
+import contextlib
 
 
 def check_previous_reserve(model: object, data: dict) -> None:
-    try:
+    with contextlib.suppress(Exception):
         previous_slot_reserve = model.objects.get(
             parking_slot_id=data.get("parking_slot_id"),
             start_date=None,
@@ -14,6 +14,4 @@ def check_previous_reserve(model: object, data: dict) -> None:
         previous_slot_reserve.exit_date = None
         previous_slot_reserve.save()
         return
-    except ObjectDoesNotExist:
-        pass
     model(**data).save()
