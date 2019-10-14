@@ -14,4 +14,4 @@ def user_inactive_reservations(request):
     ).values("id", "enter_date", "exit_date", "parking_slot", "created_date")
     if reservations:
         return JsonResponse({"result": list(reservations)}, status=200)
-    return JsonResponse({"result": "You have no inactive reservations"}, status=206)
+    return JsonResponse({"result": "You have no inactive reservations"}, status=404)

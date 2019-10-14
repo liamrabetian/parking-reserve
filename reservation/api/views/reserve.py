@@ -59,7 +59,8 @@ def reserve_parking(request):
                 continue
         else:
             return JsonResponse(
-                {"result": "No parking is available for reserve right now!", status=404}
+                {"result": "No parking is available for reserve right now!"},
+             status=404
             )
         data["parking_slot_id"] = available_parking
         # the function checks if there's already
@@ -78,7 +79,8 @@ def reserve_parking(request):
         )
     ).exists():
         return JsonResponse(
-            {"result": "Dates overlaps. Try other dates and / or parking space.", status=409}
+            {"result": "Dates overlaps. Try other dates and / or parking space."},
+             status=409
         )
     else:
         check_previous_reserve(Reservation, data)
