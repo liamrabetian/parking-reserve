@@ -14,12 +14,12 @@ def register(request):
     try:
         validate_password(data.get("password"))
     except ValidationError:
-        return JsonResponse({"result": "This password is too common!"})
+        return JsonResponse({"result": "This password is too common!"}, status=406)
     try:
         user = User.objects.create_user(
             data.get("username"), data.get("email"), data.get("password")
         )
         login(request, user)
     except Exception:
-        return JsonResponse({"result": "Username is already taken.choose another!"})
-    return JsonResponse({"result": "User Created"})
+        return JsonResponse({"result": "Username is already taken.choose another!"}, status=409)
+    return JsonResponse({"result": "User Created"}, status=200)

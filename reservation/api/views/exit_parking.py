@@ -18,7 +18,7 @@ def exit_parking(request):
     parking_slot = data.get("parking_slot_id")
     current_user = request.user
     if not current_user.is_authenticated:
-        return JsonResponse({"result": "you must login first"})
+        return JsonResponse({"result": "you must login first"}, status=401)
 
     reserved_parking_slot = Reservation.objects.filter(
         user_id=current_user.id, parking_slot_id=parking_slot,
@@ -26,9 +26,9 @@ def exit_parking(request):
     )
     if not reserved_parking_slot:
         return JsonResponse(
-            {"result": "the parking lot isn't reserved by you!"})
+            {"result": "the parking lot isn't reserved by you!"}, status=404)
     new_data["start_date"] = None
     new_data["finish_date"] = None
     new_data["exit_date"] = timezone.now()
     reserved_parking_slot.update(**new_data)
-    return JsonResponse({"result": "your exit has been recorded!"})
+    return JsonResponse({"result": "your exit has been recorded!"}, status=200)

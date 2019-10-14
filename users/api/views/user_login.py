@@ -14,6 +14,6 @@ def user_login(request):
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
-        return JsonResponse({"result": "you are now logged in!"})
+        return JsonResponse({"result": "you are now logged in!"}, status=200)
     else:
-        return JsonResponse({"result": "Wrong username or password!"})
+        return JsonResponse({"result": "Wrong username or password!"}, status=401)

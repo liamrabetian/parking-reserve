@@ -51,11 +51,11 @@ def available_parkings(request):
             else:
                 available_parkings.append(slot)
         if available_parkings:
-            return JsonResponse({"result": available_parkings})
+            return JsonResponse({"result": available_parkings}, status=200)
         else:
             return JsonResponse(
-                {"result": "No parking is available in this time range"}
-            )
+                {"result": "No parking is available in this time range"},
+             status=204)
     for slot in list(all_parking_slots):
         if slot.get("id") not in list(reserved_parking_slots):
             available_parkings.append(slot)
@@ -63,6 +63,6 @@ def available_parkings(request):
             continue
 
     if available_parkings:
-        return JsonResponse({"result": list(available_parkings)})
+        return JsonResponse({"result": list(available_parkings)}, status=200)
     else:
-        return JsonResponse({"result": "no available parkings at this moment!"})
+        return JsonResponse({"result": "no available parkings at this moment!"}, status=204)

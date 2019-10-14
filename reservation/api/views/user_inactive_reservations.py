@@ -13,5 +13,5 @@ def user_inactive_reservations(request):
         | Q(user_id=current_user.id, exit_date__isnull=False)
     ).values("id", "enter_date", "exit_date", "parking_slot", "created_date")
     if reservations:
-        return JsonResponse({"result": list(reservations)})
-    return JsonResponse({"result": "You have no inactive reservations"})
+        return JsonResponse({"result": list(reservations)}, status=200)
+    return JsonResponse({"result": "You have no inactive reservations"}, status=206)

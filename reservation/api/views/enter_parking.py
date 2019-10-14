@@ -19,7 +19,7 @@ def enter_parking(request):
     if Reservation.objects.filter(
         id=data.get("id"), enter_date__isnull=False, finish_date__gt=timezone.now()
     ).exists():
-        return JsonResponse({"result": "This Parking is still occupied!"})
+        return JsonResponse({"result": "This Parking is still occupied!"}, status=403)
     reserved_parking = Reservation.objects.filter(
         user_id=current_user.id,
         id=data.get("id"),
@@ -28,5 +28,5 @@ def enter_parking(request):
     )
     if reserved_parking:
         reserved_parking.update(enter_date=timezone.now(), exit_date=None)
-        return JsonResponse({"result": "your enter has been recorded"})
-    return JsonResponse({"result": "you don't have a reservation"})
+        return JsonResponse({"result": "your enter has been recorded"}, status=200)
+    return JsonResponse({"result": "you don't have a reservation"}, status=404)

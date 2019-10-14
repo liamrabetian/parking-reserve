@@ -29,4 +29,4 @@ def create_parking(request):
     for slot in slots:
         p = ParkingSlot(floor=f, slot_number=slot)
         p.save()
-    return JsonResponse({"result": "parking floor and slots created!"})
+    return JsonResponse({"result": "parking floor and slots created!"}, status=200)

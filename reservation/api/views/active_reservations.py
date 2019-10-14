@@ -18,5 +18,5 @@ def active_reservations(request):
         "user__username",
     )
     if reservations:
-        return JsonResponse({"result": list(reservations)})
-    return JsonResponse({"result": "There are no reservations right now!"})
+        return JsonResponse({"result": list(reservations)}, status=200)
+    return JsonResponse({"result": "There are no reservations right now!"}, status=204)

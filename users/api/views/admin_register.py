@@ -15,7 +15,7 @@ def admin_register(request):
     try:
         validate_password(data.get("password"))
     except ValidationError:
-        return JsonResponse({"result": "This password is too common!"})
+        return JsonResponse({"result": "This password is too common!"}, status=406)
 
     try:
         user = User.objects.create_user(
@@ -24,6 +24,6 @@ def admin_register(request):
         permission = Permission.objects.get(name="has admin role permissions")
         user.user_permissions.add(permission)
         login(request, user)
-        return JsonResponse({"result": "Admin user created"})
+        return JsonResponse({"result": "Admin user created"}, status=200)
     except Exception:
-        return JsonResponse({"result": "Username is already taken.choose another!"})
+        return JsonResponse({"result": "Username is already taken.choose another!"}, status=409)

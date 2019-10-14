@@ -12,5 +12,5 @@ def user_active_reservations(request):
     ).values("id", "start_date", "finish_date", "parking_slot", "created_date")
 
     if reservation:
-        return JsonResponse({"result": list(reservation)})
-    return JsonResponse({"result": "You have no active reservations"})
+        return JsonResponse({"result": list(reservation)}, status=200)
+    return JsonResponse({"result": "You have no active reservations"}, status=206)

@@ -36,9 +36,9 @@ def reserve_parking(request):
         or finish_date < str(timezone.now())
         or finish_date < start_date
     ):
-        return JsonResponse({"result": "Please choose a valid time range!"})
+        return JsonResponse({"result": "Please choose a valid time range!"}, status=400)
     if not current_user.is_authenticated:
-        return JsonResponse({"result": "You need to login first!"})
+        return JsonResponse({"result": "You need to login first!"}, status=401)
     # reserve the nearest parking slot for the customer
     # if no parking slot is chosen
     if "parking_slot_id" not in data:
@@ -59,16 +59,16 @@ def reserve_parking(request):
                 continue
         else:
             return JsonResponse(
-                {"result": "No parking is available for reserve right now!"}
+                {"result": "No parking is available for reserve right now!", status=404}
             )
         data["parking_slot_id"] = available_parking
         # the function checks if there's already
         # a reservation object with this parking slot in db
         check_previous_reserve(Reservation, data)
-        return JsonResponse(data={"result": "Reservation done!"})
+        return JsonResponse(data={"result": "Reservation done!"}, status=200)
 
     if not ParkingSlot.objects.filter(id=data.get("parking_slot_id")).exists():
-        return JsonResponse({"result": "The requested Parking slot doesn't exist!"})
+        return JsonResponse({"result": "The requested Parking slot doesn't exist!"}, status=400)
 
     if Reservation.objects.filter(
         Q(parking_slot_id=data.get("parking_slot_id"))
@@ -78,8 +78,8 @@ def reserve_parking(request):
         )
     ).exists():
         return JsonResponse(
-            {"result": "Dates overlaps. Try other dates and / or parking space."}
+            {"result": "Dates overlaps. Try other dates and / or parking space.", status=409}
         )
     else:
         check_previous_reserve(Reservation, data)
-        return JsonResponse(data={"result": "Reservation done!"})
+        return JsonResponse(data={"result": "Reservation done!"}, status=200)

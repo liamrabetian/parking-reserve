@@ -8,6 +8,6 @@ def user_logout(request):
     current_user = request.user
     if current_user.is_authenticated:
         logout(request)
-        return JsonResponse({"result": "You are now logged out!"})
+        return JsonResponse({"result": "You are now logged out!"}, status=200)
     else:
-        return JsonResponse({"result": "You aren't logged in!"})
+        return JsonResponse({"result": "You aren't logged in!"}, status=400)
