@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Floor(models.Model):
-    floor_number = models.CharField(max_length=2)
+    floor_number = models.CharField(max_length=2, unique=True)
 
     def __str__(self):
         return self.floor_number
@@ -10,7 +10,7 @@ class Floor(models.Model):
 
 class ParkingSlot(models.Model):
     floor = models.ForeignKey(Floor, on_delete=models.CASCADE)
-    slot_number = models.CharField(max_length=2)
+    slot_number = models.CharField(max_length=2, unique=True)
 
     def __str__(self):
         return self.slot_number
