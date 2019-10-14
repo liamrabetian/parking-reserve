@@ -17,16 +17,22 @@ def create_parking(request):
     request_body = request.body.decode("utf-8")
     data = json.loads(request_body)
     floor = data.get("floor")
-    slots = data.get("slots")
+    slots = list(data.get("slots"))
 
     previous_floor = Floor.objects.filter(floor_number=floor)
     if previous_floor:
-        previous_floor.delete()
-    f = Floor(floor_number=floor)
-    f.save()
+        previous_floor.update(floor_number=floor)
+    else:
+        f = Floor(floor_number=floor)
+        f.save()
 
-    f = Floor.objects.last()
-    for slot in slots:
-        p = ParkingSlot(floor=f, slot_number=slot)
-        p.save()
+    try:
+        f = Floor.objects.get(floor_number=floor)
+        ParkingSlot.objects.bulk_create(
+            [ParkingSlot(floor=f, slot_number=y) for y in slots]
+        )
+    except Exception:
+        return JsonResponse(
+            {"result": "These Parking slots already exist!"}, status=406
+        )
     return JsonResponse({"result": "parking floor and slots created!"}, status=200)
