@@ -18,6 +18,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('parking/', include('reservation.api.urls')),
-    path('users/', include('users.api.urls'))
+    path('reservation/', include('reservation.api.urls')),
+    path('users/', include('users.api.urls')),
+    path('parking/', include('parking.api.urls'))
 ]
