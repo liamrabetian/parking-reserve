@@ -22,12 +22,14 @@ def exit_parking(request):
 
     reserved_parking_slot = Reservation.objects.filter(
         user_id=current_user.id, parking_slot_id=parking_slot,
-        exit_date__isnull=True
+        exit_date__isnull=True,
+        enter_date__isnull=False
     )
     if not reserved_parking_slot:
         return JsonResponse(
-            {"result": "the parking lot isn't reserved by you!"}, status=404)
+            {"result": "the parking lot isn't occupied by you!"}, status=404)
     new_data["start_date"] = None
+    new_data["enter_date"] = None
     new_data["finish_date"] = None
     new_data["exit_date"] = timezone.now()
     reserved_parking_slot.update(**new_data)
