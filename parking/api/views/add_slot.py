@@ -2,8 +2,10 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from parking.models import ParkingSlot
+from django.contrib.auth.decorators import permission_required
 
 
+@permission_required("reservation.admin_role", login_url="/reservation/forbiden_response/", raise_exception=False)
 @csrf_exempt
 def add_slot(request):
     request_body = request.body.decode("utf-8")

@@ -3,6 +3,7 @@ import json
 from parking.models import Floor, ParkingSlot
 from django.http import JsonResponse
 from reservation.decorators.validate_params import validate_params
+from django.contrib.auth.decorators import permission_required
 
 
 schema = {
@@ -11,6 +12,7 @@ schema = {
 }
 
 
+@permission_required("reservation.admin_role", login_url="/reservation/forbiden_response/", raise_exception=False)
 @csrf_exempt
 @validate_params(schema=schema)
 def create_parking(request):
