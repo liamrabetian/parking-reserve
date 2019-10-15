@@ -36,20 +36,19 @@ def available_parkings(request):
         data = json.loads(request_body)
         start_date = data.get("start_date")
         finish_date = data.get("finish_date")
+        not_available_parkings = (
+            reserved_parking_slots.filter(
+                Q(start_date__range=[start_date, finish_date])
+                | Q(finish_date__range=[start_date, finish_date])
+            )
+        ).values_list("parking_slot__id", flat=True)
+
         for slot in list(all_parking_slots):
-            if slot.get("id") in list(reserved_parking_slots):
-                if Reservation.objects.filter(
-                    Q(parking_slot_id=slot.get("id"))
-                    & (
-                        Q(start_date__range=[start_date, finish_date])
-                        | Q(finish_date__range=[start_date, finish_date])
-                    )
-                ).exists():
-                    continue
-                else:
-                    available_parkings.append(slot)
+            if slot.get("id") in list(not_available_parkings):
+                continue
             else:
                 available_parkings.append(slot)
+
         if available_parkings:
             return JsonResponse({"result": available_parkings}, status=200)
         else:
