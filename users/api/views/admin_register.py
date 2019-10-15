@@ -5,10 +5,8 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User, Permission
 from django.contrib.auth import login
-from django.contrib.auth.decorators import permission_required
 
 
-@permission_required("reservation.admin_role", login_url="/reservation/forbiden_response/", raise_exception=False)
 @csrf_exempt
 def admin_register(request):
     request_body = request.body.decode("utf-8")
