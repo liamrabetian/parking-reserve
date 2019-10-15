@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'reservation.custom_middleware.jwt_middleware.RequiredJWTAuthenticationMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -108,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Iran'
 
 USE_I18N = True
 
@@ -121,3 +122,16 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+JWT_ALLOWED_URLS = [
+    '/users/login',
+    '/users/token_auth/',
+    '/users/logout',
+    '/users/admin_register',
+    '/users/register'
+]
+
+
+import datetime
+
+JWT_EXPIRATION_DELTA = datetime.timedelta(seconds=9000)
