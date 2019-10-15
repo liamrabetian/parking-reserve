@@ -6,7 +6,7 @@ from django.utils import timezone
 from reservation.decorators.validate_params import validate_params
 
 
-schema = {"parking_slot_id": {"type": "integer", "required": True}}
+schema = {"id": {"type": "integer", "required": True}}
 
 
 @csrf_exempt
@@ -15,13 +15,12 @@ def exit_parking(request):
     request_body = request.body.decode("utf-8")
     data = json.loads(request_body)
     new_data = dict()
-    parking_slot = data.get("parking_slot_id")
     current_user = request.user
     if not current_user.is_authenticated:
         return JsonResponse({"result": "you must login first"}, status=401)
 
     reserved_parking_slot = Reservation.objects.filter(
-        user_id=current_user.id, parking_slot_id=parking_slot,
+        user_id=current_user.id, id=data.get("id"),
         exit_date__isnull=True,
         enter_date__isnull=False
     )
@@ -29,7 +28,6 @@ def exit_parking(request):
         return JsonResponse(
             {"result": "the parking lot isn't occupied by you!"}, status=404)
     new_data["start_date"] = None
-    new_data["enter_date"] = None
     new_data["finish_date"] = None
     new_data["exit_date"] = timezone.now()
     reserved_parking_slot.update(**new_data)
