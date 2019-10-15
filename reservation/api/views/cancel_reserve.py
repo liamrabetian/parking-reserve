@@ -25,7 +25,7 @@ def cancel_reserve(request):
         if instance:
             if instance.enter_date:
                 return JsonResponse({"result":
-                                     "You have already entered the parking!"}, status=406)
+                                     "You have already entered the parking!"}, status=403)
             instance.delete()
             return JsonResponse({"result": "Reservation canceled!"}, status=200)
         else:

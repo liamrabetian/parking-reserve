@@ -35,6 +35,6 @@ def create_parking(request):
         )
     except Exception:
         return JsonResponse(
-            {"result": "These Parking slots already exist!"}, status=406
+            {"result": "These Parking slots already exist!"}, status=403
         )
     return JsonResponse({"result": "parking floor and slots created!"}, status=200)

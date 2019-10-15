@@ -14,7 +14,7 @@ def register(request):
     try:
         validate_password(data.get("password"))
     except ValidationError:
-        return JsonResponse({"result": "This password is too common!"}, status=406)
+        return JsonResponse({"result": "This password is too common!"}, status=403)
     try:
         user = User.objects.create_user(
             data.get("username"), data.get("email"), data.get("password")
