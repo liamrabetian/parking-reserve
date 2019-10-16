@@ -80,7 +80,7 @@ def reserve_parking(request):
     ).exists():
         return JsonResponse(
             {"result": "Dates overlaps. Try other dates and / or parking space."},
-             status=409
+             status=403
         )
     else:
         check_previous_reserve(Reservation, data)

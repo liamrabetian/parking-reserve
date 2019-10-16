@@ -21,5 +21,5 @@ def register(request):
         )
         login(request, user)
     except Exception:
-        return JsonResponse({"result": "Username is already taken.choose another!"}, status=409)
+        return JsonResponse({"result": "Username is already taken.choose another!"}, status=403)
     return JsonResponse({"result": "User Created"}, status=200)

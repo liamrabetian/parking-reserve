@@ -26,4 +26,4 @@ def admin_register(request):
         login(request, user)
         return JsonResponse({"result": "Admin user created"}, status=200)
     except Exception:
-        return JsonResponse({"result": "Username is already taken.choose another!"}, status=409)
+        return JsonResponse({"result": "Username is already taken.choose another!"}, status=403)
