@@ -19,16 +19,13 @@ def cancel_reserve(request):
         return JsonResponse({"result": "You must login first!"}, status=401)
 
     try:
-        instance = Reservation.objects.filter(
+        instance = Reservation.objects.get(
             user_id=current_user.id, id=reservation
-        ).first()
-        if instance:
-            if instance.enter_date:
-                return JsonResponse({"result":
-                                     "You have already entered the parking!"}, status=403)
-            instance.delete()
-            return JsonResponse({"result": "Reservation canceled!"}, status=200)
-        else:
-            return JsonResponse({"result": "No such reservation exists!"}, status=404)
+        )
+        if instance.enter_date:
+            return JsonResponse({"result":
+                                 "You have already entered the parking!"}, status=403)
+        instance.delete()
+        return JsonResponse({"result": "Reservation canceled!"}, status=200)
     except Exception:
-        return JsonResponse({"result": "Bad Request"}, status=400)
+        return JsonResponse({"result": "No such reservation exists!"}, status=404)
