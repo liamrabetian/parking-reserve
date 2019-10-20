@@ -2,9 +2,11 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
+from reservation.decorators.request_method import check_request_method
 
 
 @csrf_exempt
+@check_request_method(method="POST")
 def user_login(request):
     request_body = request.body.decode("utf-8")
     data = json.loads(request_body)

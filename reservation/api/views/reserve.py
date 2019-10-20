@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from .helpers.check_time_validity import check_time_validity
 from reservation.decorators.login_required import login_required
+from reservation.decorators.request_method import check_request_method
 
 
 schema = {
@@ -18,6 +19,7 @@ schema = {
 
 @csrf_exempt
 @login_required
+@check_request_method(method="POST")
 @validate_params(schema=schema)
 def reserve_parking(request):
     """User can choose a desired parking spot.

@@ -4,11 +4,13 @@ from django.views.decorators.csrf import csrf_exempt
 from parking.models import ParkingSlot
 from django.contrib.auth.decorators import permission_required
 from reservation.decorators.login_required import login_required
+from reservation.decorators.request_method import check_request_method
 
 
-@login_required
-@permission_required("reservation.admin_role", login_url="/reservation/forbiden_response/", raise_exception=False)
 @csrf_exempt
+@login_required
+@check_request_method(method="POST")
+@permission_required("reservation.admin_role", login_url="/reservation/forbiden_response/", raise_exception=False)
 def add_slot(request):
     request_body = request.body.decode("utf-8")
     data = json.loads(request_body)

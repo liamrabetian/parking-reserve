@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from reservation.decorators.validate_params import validate_params
 from django.contrib.auth.decorators import permission_required
 from reservation.decorators.login_required import login_required
+from reservation.decorators.request_method import check_request_method
 
 
 schema = {
@@ -13,9 +14,10 @@ schema = {
 }
 
 
-@login_required
-@permission_required("reservation.admin_role", login_url="/reservation/forbiden_response/", raise_exception=False)
 @csrf_exempt
+@login_required
+@check_request_method(method="POST")
+@permission_required("reservation.admin_role", login_url="/reservation/forbiden_response/", raise_exception=False)
 @validate_params(schema=schema)
 def create_parking(request):
     request_body = request.body.decode("utf-8")

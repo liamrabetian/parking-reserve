@@ -4,6 +4,7 @@ from reservation.models import Reservation
 from django.http import JsonResponse
 from reservation.decorators.validate_params import validate_params
 from reservation.decorators.login_required import login_required
+from reservation.decorators.request_method import check_request_method
 
 
 schema = {"id": {"type": "integer", "required": True}}
@@ -11,6 +12,7 @@ schema = {"id": {"type": "integer", "required": True}}
 
 @csrf_exempt
 @login_required
+@check_request_method(method="DELETE")
 @validate_params(schema=schema)
 def cancel_reserve(request):
     request_body = request.body.decode("utf-8")

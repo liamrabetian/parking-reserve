@@ -5,9 +5,11 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User, Permission
 from django.contrib.auth import login
+from reservation.decorators.request_method import check_request_method
 
 
 @csrf_exempt
+@check_request_method("POST")
 def admin_register(request):
     request_body = request.body.decode("utf-8")
     data = json.loads(request_body)

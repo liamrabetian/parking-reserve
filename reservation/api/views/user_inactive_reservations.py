@@ -4,10 +4,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from django.db.models import Q
 from reservation.decorators.login_required import login_required
+from reservation.decorators.request_method import check_request_method
 
 
 @csrf_exempt
 @login_required
+@check_request_method(method="GET")
 def user_inactive_reservations(request):
     current_user = request.user
     reservations = Reservation.objects.filter(
