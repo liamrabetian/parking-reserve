@@ -51,17 +51,16 @@ def reserve_parking(request):
         )
         all_parking_slots = ParkingSlot.objects.values_list("id", flat=True)
 
-        for slot in list(all_parking_slots):
-            if slot not in list(reserved_parking_slots):
-                available_parking = slot
-                break
-            else:
-                continue
-        else:
+        available_parking = all_parking_slots.exclude(
+            id__in=list(reserved_parking_slots)
+        ).first()
+
+        if not available_parking:
             return JsonResponse(
                 {"result": "No parking is available for reserve right now!"},
-             status=404
+                status=404
             )
+
         data["parking_slot_id"] = available_parking
         # the function checks if there's already
         # a reservation object with this parking slot in db
