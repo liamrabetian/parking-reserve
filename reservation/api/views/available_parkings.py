@@ -5,6 +5,7 @@ from parking.models import ParkingSlot
 from django.db.models import Q
 from django.utils import timezone
 from reservation.decorators.validate_params import validate_params
+from reservation.decorators.login_required import login_required
 
 
 schema = {
@@ -14,6 +15,7 @@ schema = {
 
 
 @csrf_exempt
+@login_required
 @validate_params(schema=schema)
 def available_parkings(request):
     """Two ways to see the available parkings.

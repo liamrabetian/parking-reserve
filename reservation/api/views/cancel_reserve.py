@@ -3,11 +3,14 @@ import json
 from reservation.models import Reservation
 from django.http import JsonResponse
 from reservation.decorators.validate_params import validate_params
+from reservation.decorators.login_required import login_required
+
 
 schema = {"id": {"type": "integer", "required": True}}
 
 
 @csrf_exempt
+@login_required
 @validate_params(schema=schema)
 def cancel_reserve(request):
     request_body = request.body.decode("utf-8")

@@ -6,6 +6,7 @@ from reservation.decorators.validate_params import validate_params
 from .helpers.check_time_validity import check_time_validity
 from parking.models import ParkingSlot
 from reservation.models import Reservation
+from reservation.decorators.login_required import login_required
 
 
 schema = {
@@ -15,6 +16,7 @@ schema = {
 
 
 @csrf_exempt
+@login_required
 @validate_params(schema=schema)
 def reserve_nearest_parking(request):
     """The nearest parking slot would be reserved if,

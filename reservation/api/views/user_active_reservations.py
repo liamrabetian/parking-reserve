@@ -3,9 +3,11 @@ from django.views.decorators.csrf import csrf_exempt
 from reservation.models import Reservation
 from django.utils import timezone
 from datetime import timedelta
+from reservation.decorators.login_required import login_required
 
 
 @csrf_exempt
+@login_required
 def user_active_reservations(request):
     current_user = request.user
     reservation = Reservation.objects.filter(

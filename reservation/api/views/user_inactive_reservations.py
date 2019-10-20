@@ -3,9 +3,11 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from django.db.models import Q
+from reservation.decorators.login_required import login_required
 
 
 @csrf_exempt
+@login_required
 def user_inactive_reservations(request):
     current_user = request.user
     reservations = Reservation.objects.filter(

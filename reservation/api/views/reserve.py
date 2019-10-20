@@ -6,6 +6,7 @@ from reservation.decorators.validate_params import validate_params
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from .helpers.check_time_validity import check_time_validity
+from reservation.decorators.login_required import login_required
 
 
 schema = {
@@ -16,6 +17,7 @@ schema = {
 
 
 @csrf_exempt
+@login_required
 @validate_params(schema=schema)
 def reserve_parking(request):
     """User can choose a desired parking spot.
@@ -34,8 +36,8 @@ def reserve_parking(request):
     if not check_time_validity(start_date, finish_date):
         return JsonResponse({"result": "Please choose a valid time range!"}, status=400)
 
-    if not current_user.is_authenticated:
-        return JsonResponse({"result": "You need to login first!"}, status=401)
+    # if not current_user.is_authenticated:
+    #     return JsonResponse({"result": "You need to login first!"}, status=401)
 
     if not ParkingSlot.objects.filter(id=data.get("parking_slot_id")).exists():
         return JsonResponse(
