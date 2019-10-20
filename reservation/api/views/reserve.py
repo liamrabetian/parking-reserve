@@ -5,23 +5,23 @@ from parking.models import ParkingSlot
 from reservation.decorators.validate_params import validate_params
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
-from django.utils import timezone
+from .helpers.check_time_validity import check_time_validity
 
 
 schema = {
     "start_date": {"type": "string", "required": True},
     "finish_date": {"type": "string", "required": True},
-    "parking_slot_id": {"type": ["string", "integer"], "required": False},
+    "parking_slot_id": {"type": ["string", "integer"], "required": True},
 }
 
 
 @csrf_exempt
 @validate_params(schema=schema)
 def reserve_parking(request):
-    """Two ways to reserve a parking.
+    """User can choose a desired parking spot.
 
-    User can choose a desired parking spot.
-    User can just request for the nearest parking spot to be reserved.
+    If the spot isn't reserved in the chosen time range,
+    the reservation objects will be saved.
     """
     request_body = request.body.decode("utf-8")
     data = json.loads(request_body)
@@ -29,40 +29,13 @@ def reserve_parking(request):
     data["user_id"] = current_user.id
     start_date = data.get("start_date")
     finish_date = data.get("finish_date")
+
     # check the chosen date is valid
-    if (
-        start_date < str(timezone.now())
-        or finish_date < str(timezone.now())
-        or finish_date < start_date
-    ):
+    if not check_time_validity(start_date, finish_date):
         return JsonResponse({"result": "Please choose a valid time range!"}, status=400)
+
     if not current_user.is_authenticated:
         return JsonResponse({"result": "You need to login first!"}, status=401)
-    # reserve the nearest parking slot for the customer
-    # if no parking slot is chosen
-    if "parking_slot_id" not in data:
-        # retrieve all parking slots and check
-        # if the parking slot is reserved in the next for loop
-        reserved_parking_slots = (
-            Reservation.objects.filter(finish_date__gt=timezone.now())
-            .select_related("parking_slot")
-            .values_list("parking_slot_id", flat=True)
-        )
-        all_parking_slots = ParkingSlot.objects.values_list("id", flat=True)
-
-        available_parking = all_parking_slots.exclude(
-            id__in=list(reserved_parking_slots)
-        ).first()
-
-        if not available_parking:
-            return JsonResponse(
-                {"result": "No parking is available for reserve right now!"}, status=404
-            )
-
-        data["parking_slot_id"] = available_parking
-
-        Reservation(**data).save()
-        return JsonResponse(data={"result": "Reservation done!"}, status=200)
 
     if not ParkingSlot.objects.filter(id=data.get("parking_slot_id")).exists():
         return JsonResponse(
