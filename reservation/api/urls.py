@@ -9,6 +9,7 @@ from reservation.api.views.user_active_reservations import user_active_reservati
 from reservation.api.views.user_inactive_reservations import user_inactive_reservations
 from reservation.api.views.helpers.help_active_reservations import forbiden_response
 from reservation.api.views.reserve_nearest_parking import reserve_nearest_parking
+from reservation.api.views.available_parkings_in_time_range import available_parkings_in_time_range
 
 
 urlpatterns = [
@@ -21,5 +22,6 @@ urlpatterns = [
     path("user_active_reservations", user_active_reservations, name="user-active-reservations"),
     path("user_inactive_reservations", user_inactive_reservations, name="user-inactive-reservations"),
     path("forbiden_response/", forbiden_response, name="forbiden-response"),
-    path("reserve_nearest_parking", reserve_nearest_parking, name="reserve-nearest-parking")
+    path("reserve_nearest_parking", reserve_nearest_parking, name="reserve-nearest-parking"),
+    path("available_parkings_in_time_range", available_parkings_in_time_range, name="available-parkings-in-time-range")
 ]
