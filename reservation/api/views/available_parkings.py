@@ -43,23 +43,20 @@ def available_parkings(request):
             )
         ).values_list("parking_slot__id", flat=True)
 
-        for slot in list(all_parking_slots):
-            if slot.get("id") in list(not_available_parkings):
-                continue
-            else:
-                available_parkings.append(slot)
+        available_parkings = all_parking_slots.exclude(
+            id__in=list(not_available_parkings)
+        )
 
         if available_parkings:
-            return JsonResponse({"result": available_parkings}, status=200)
+            return JsonResponse({"result": list(available_parkings)}, status=200)
         else:
             return JsonResponse(
                 {"result": "No parking is available in this time range"}, status=404
             )
-    for slot in list(all_parking_slots):
-        if slot.get("id") not in list(reserved_parking_slots):
-            available_parkings.append(slot)
-        else:
-            continue
+
+    available_parkings = all_parking_slots.exclude(
+        id__in=list(reserved_parking_slots)
+    )
 
     if available_parkings:
         return JsonResponse({"result": list(available_parkings)}, status=200)
