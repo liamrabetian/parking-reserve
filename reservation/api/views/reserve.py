@@ -4,7 +4,6 @@ from reservation.models import Reservation
 from parking.models import ParkingSlot
 from reservation.decorators.validate_params import validate_params
 from django.views.decorators.csrf import csrf_exempt
-from .helpers.help_reserve import check_previous_reserve
 from django.db.models import Q
 from django.utils import timezone
 
@@ -57,18 +56,18 @@ def reserve_parking(request):
 
         if not available_parking:
             return JsonResponse(
-                {"result": "No parking is available for reserve right now!"},
-                status=404
+                {"result": "No parking is available for reserve right now!"}, status=404
             )
 
         data["parking_slot_id"] = available_parking
-        # the function checks if there's already
-        # a reservation object with this parking slot in db
-        check_previous_reserve(Reservation, data)
+
+        Reservation(**data).save()
         return JsonResponse(data={"result": "Reservation done!"}, status=200)
 
     if not ParkingSlot.objects.filter(id=data.get("parking_slot_id")).exists():
-        return JsonResponse({"result": "The requested Parking slot doesn't exist!"}, status=400)
+        return JsonResponse(
+            {"result": "The requested Parking slot doesn't exist!"}, status=400
+        )
 
     if Reservation.objects.filter(
         Q(parking_slot_id=data.get("parking_slot_id"))
@@ -79,8 +78,8 @@ def reserve_parking(request):
     ).exists():
         return JsonResponse(
             {"result": "Dates overlaps. Try other dates and / or parking space."},
-             status=403
+            status=403,
         )
     else:
-        check_previous_reserve(Reservation, data)
+        Reservation(**data).save()
         return JsonResponse(data={"result": "Reservation done!"}, status=200)
