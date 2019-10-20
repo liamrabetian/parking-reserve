@@ -47,7 +47,7 @@ def available_parkings(request):
             id__in=list(not_available_parkings)
         )
 
-        if available_parkings:
+        if available_parkings.exists():
             return JsonResponse({"result": list(available_parkings)}, status=200)
         else:
             return JsonResponse(
@@ -58,7 +58,7 @@ def available_parkings(request):
         id__in=list(reserved_parking_slots)
     )
 
-    if available_parkings:
+    if available_parkings.exists():
         return JsonResponse({"result": list(available_parkings)}, status=200)
     else:
         return JsonResponse(

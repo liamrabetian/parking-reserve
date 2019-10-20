@@ -26,7 +26,7 @@ def enter_parking(request):
         finish_date__gt=timezone.now(),
         start_date__lte=timezone.now(),
     )
-    if reserved_parking:
+    if reserved_parking.exists():
         reserved_parking.update(enter_date=timezone.now(), exit_date=None)
         return JsonResponse({"result": "your enter has been recorded"}, status=200)
     return JsonResponse({"result": "you don't have a reservation"}, status=404)

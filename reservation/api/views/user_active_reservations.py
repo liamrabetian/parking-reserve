@@ -12,7 +12,7 @@ def user_active_reservations(request):
         user_id=current_user.id, finish_date__gt=timezone.now()
     ).values("id", "start_date", "finish_date", "parking_slot", "created_date")
 
-    if reservation:
+    if reservation.exists():
         reserves = list()
         for reserve in reservation:
             diff_time = reserve.get("finish_date") - timezone.now()

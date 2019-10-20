@@ -24,7 +24,7 @@ def exit_parking(request):
         exit_date__isnull=True,
         enter_date__isnull=False
     )
-    if not reserved_parking_slot:
+    if not reserved_parking_slot.exists():
         return JsonResponse(
             {"result": "the parking lot isn't occupied by you!"}, status=404)
     new_data["start_date"] = None
