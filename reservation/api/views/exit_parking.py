@@ -20,8 +20,6 @@ def exit_parking(request):
     data = json.loads(request_body)
     new_data = dict()
     current_user = request.user
-    if not current_user.is_authenticated:
-        return JsonResponse({"result": "you must login first"}, status=401)
 
     reserved_parking_slot = Reservation.objects.filter(
         user_id=current_user.id, id=data.get("id"),

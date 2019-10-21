@@ -38,9 +38,6 @@ def reserve_parking(request):
     if not check_time_validity(start_date, finish_date):
         return JsonResponse({"result": "Please choose a valid time range!"}, status=400)
 
-    # if not current_user.is_authenticated:
-    #     return JsonResponse({"result": "You need to login first!"}, status=401)
-
     if not ParkingSlot.objects.filter(id=data.get("parking_slot_id")).exists():
         return JsonResponse(
             {"result": "The requested Parking slot doesn't exist!"}, status=400

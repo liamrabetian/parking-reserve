@@ -20,8 +20,6 @@ def cancel_reserve(request):
 
     reservation = data.get("id")
     current_user = request.user
-    if not current_user.is_authenticated:
-        return JsonResponse({"result": "You must login first!"}, status=401)
 
     try:
         instance = Reservation.objects.get(
