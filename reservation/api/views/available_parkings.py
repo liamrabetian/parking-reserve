@@ -30,7 +30,7 @@ def available_parkings(request):
     all_parking_slots = ParkingSlot.objects.values("id", "floor", "slot_number")
 
     available_parkings = all_parking_slots.exclude(
-        id__in=list(reserved_parking_slots)
+        id__in=set(reserved_parking_slots)
     )
 
     if available_parkings.exists():

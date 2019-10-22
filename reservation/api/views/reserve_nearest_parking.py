@@ -44,7 +44,7 @@ def reserve_nearest_parking(request):
     all_parking_slots = ParkingSlot.objects.values_list("id", flat=True)
     # retrieve the first available parking that isn't reserved now
     available_parking = all_parking_slots.exclude(
-        id__in=list(reserved_parking_slots)
+        id__in=set(reserved_parking_slots)
     ).first()
     if not available_parking:
         return JsonResponse(
