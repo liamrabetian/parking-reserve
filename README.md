@@ -1,7 +1,7 @@
 This is a simple, yet optimized parking reservation system written in Django.
 in order to get the program running just do the following:
 
-1 - python3 -m pip install -r requirments.txt
+1 - python3 -m pip install -r requirements.txt
 
 2 - migrate the database
 
