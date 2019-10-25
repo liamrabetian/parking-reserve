@@ -13,6 +13,6 @@ in order to get the program running just do the following:
 
 ## Contributing
 ### For requests other than user register or login requests:
-First send a request to the auth-token api, then use the bearer token in every api requests.
+First send a request to the auth-token api, then use the bearer token in every api request.
 
 Any changes are welcome, including front-end system additions.
