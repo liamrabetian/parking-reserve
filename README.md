@@ -1,14 +1,20 @@
-This is a simple, yet optimized parking reservation system written in Django.
+# Parking Reserve
+
+##About Project
+This is a simple, yet optimized parking reservation system written in Django. Currently only the backend system.
+##Running the Project Locally
 in order to get the program running just do the following:
 
-1 - python3 -m pip install -r requirments.txt
+1. Install requirements
+'''
+python3 -m pip install -r requirments.txt
+'''
+2.  migrate the database
 
-2 - migrate the database
+3. Run the project
 
-and then just run the project.
+##Contributing
+###For requests other than user register or login requests:
+First send a request to the auth-token api, then use the bearer token in every api requests.
 
-for any requests other than user register or login requests you should first send a request to the auth-token api,
-and use the bearer token in every api requests.
-
-This project is only the backend system of the parking reservation system.. You are welcome to add any front end
-system to the project or any changes and contributions you'd like.
+Any changes are welcome, including front-end system additions.
