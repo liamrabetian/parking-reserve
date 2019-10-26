@@ -30,6 +30,17 @@
         var dat = JSON.stringify(dt);
         submit_json(dat, targt);
       };
+      
+      // JS function to create Json of Login data
+      function login(){
+        var uname = document.getElementById("login_username").value;
+        var pswd = document.getElementById("login_password").value;
+        var targt = "http://127.0.0.1:8000/users/login";
+        var dt = {username:uname, password:pswd};
+        var dat = JSON.stringify(dt);
+        submit_json(dat, targt);
+      }
+
     </script>
   </head>
 <body>
@@ -55,6 +66,17 @@ Fields:- <br>
   Password <input type="password" id="reg_password"> <br>
   Email <input type="email" id="reg_email"> <br>
   <button type="submit" onclick="register()"> Submit </button>
+
+<br><br>
+
+<!-- User login API -->
+<h3>2. User login API</h3>
+Endpoint:- /users/login <br>
+Method = POST <br>
+Fields:- <br>
+  Username <input type="test" id="login_username"> <br>
+  Password <input type="password" id="login_password"> <br>
+  <button type="submit" onclick="login()"> Submit </button>
 
 <br><br>
 
