@@ -2,7 +2,6 @@ import json
 from django.http import JsonResponse
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from reservation.decorators.validate_params import validate_params
 from .helpers.check_time_validity import check_time_validity
 from parking.models import ParkingSlot
 from reservation.models import Reservation
@@ -10,16 +9,11 @@ from reservation.decorators.login_required import login_required
 from reservation.decorators.request_method import check_request_method
 
 
-schema = {
-    "start_date": {"type": "string", "required": True},
-    "finish_date": {"type": "string", "required": True},
-}
 
 
 @csrf_exempt
 @login_required
 @check_request_method(method="POST")
-@validate_params(schema=schema)
 def reserve_nearest_parking(request):
     """The nearest parking slot would be reserved if,
 
