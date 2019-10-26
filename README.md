@@ -27,7 +27,7 @@ $ deactivate
 Install the dependencies in the ``requirements.txt`` file.
 
 ```sh
-(myenv)$ pip3 install -r requirements.txt
+(venv)$ pip3 install -r requirements.txt
 ```
 
 ##### Django Setup
@@ -35,16 +35,16 @@ Install the dependencies in the ``requirements.txt`` file.
 Setup the Django project, migrate changes and create a superuser to the Database.
 
 ```sh
-(myenv)$ django-admin startproject <project-name> && cd <project-name>
-(myenv)$ python3 manage.py makemigrations
-(myenv)$ python3 manage.py migrate
-(myenv)$ python3 manage.py createsuperuser
+(venv)$ django-admin startproject <project-name> && cd <project-name>
+(venv)$ python3 manage.py makemigrations
+(venv)$ python3 manage.py migrate
+(venv)$ python3 manage.py createsuperuser
 ```
 
 Run the project
 
 ```sh
-(myenv)$ python3 manage.py runserver
+(venv)$ python3 manage.py runserver
 ```
 
 ## Contributing
