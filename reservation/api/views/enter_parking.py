@@ -3,18 +3,15 @@ from reservation.models import Reservation
 import json
 from django.utils import timezone
 from django.http import JsonResponse
-from reservation.decorators.validate_params import validate_params
 from reservation.decorators.login_required import login_required
 from reservation.decorators.request_method import check_request_method
 
 
-schema = {"id": {"type": "integer", "required": True}}
 
 
 @csrf_exempt
 @login_required
 @check_request_method(method="PUT")
-@validate_params(schema=schema)
 def enter_parking(request):
     request_body = request.body.decode("utf-8")
     data = json.loads(request_body)
