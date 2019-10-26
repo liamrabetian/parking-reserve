@@ -8,6 +8,8 @@ from reservation.decorators.request_method import check_request_method
 @csrf_exempt
 @check_request_method(method="POST")
 def user_login(request):
+    if request.user.is_authenticated:
+        return JsonResponse({"result": "You are ALREADY logged in!"}, status=200)
     request_body = request.body.decode("utf-8")
     data = json.loads(request_body)
 
