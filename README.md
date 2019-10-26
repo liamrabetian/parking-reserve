@@ -1,14 +1,56 @@
-This is a simple, yet optimized parking reservation system written in Django.
-in order to get the program running just do the following:
+# Parking Reserve
 
-1 - python3 -m pip install -r requirments.txt
+## About Project
+This is a simple, yet optimized parking reservation system written in Django. Currently only the backend system.
 
-2 - migrate the database
+## Installation
 
-and then just run the project.
+### Requirements
 
-for any requests other than user register or login requests you should first send a request to the auth-token api,
-and use the bearer token in every api requests.
+* [Django] - Python Web Developement framework 2.2+
+* Python 3.5+
 
-This project is only the backend system of the parking reservation system.. You are welcome to add any front end
-system to the project or any changes and contributions you'd like.
+##### Virtual environment
+
+Use Python's own build-in ``venv`` to create a virtual environment and install dependencies inside the (venv).
+```sh
+$ python3 -m venv venv
+```
+Activate the virtual environment.
+```sh
+$ source venv/bin/activate
+```
+To deactivate the virtual environment.
+```sh
+$ deactivate
+```
+Install the dependencies in the ``requirements.txt`` file.
+
+```sh
+(myenv)$ pip3 install -r requirements.txt
+```
+
+##### Django Setup
+
+Setup the Django project, migrate changes and create a superuser to the Database.
+
+```sh
+(myenv)$ django-admin startproject <project-name> && cd <project-name>
+(myenv)$ python3 manage.py makemigrations
+(myenv)$ python3 manage.py migrate
+(myenv)$ python3 manage.py createsuperuser
+```
+
+Run the project
+
+```sh
+(myenv)$ python3 manage.py runserver
+```
+
+## Contributing
+### For requests other than user register or login requests:
+First send a request to the auth-token api, then use the bearer token in every api request.
+
+Any changes are welcome, including front-end system additions.
+
+   [Django]: <https://www.djangoproject.com>
