@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>
+      Parking Reservation API SandBox
+    </title>
+    <script type="text/javascript">
+      // JS function to hit the API with Json data
+      function submit_json(data, target){
+        var request = new XMLHttpRequest();
+        request.withCredentials = true;
+        request.open("POST", target, true);
+        request.send(data);
+        request.onreadystatechange = function (got) {
+          if (request.readyState == request.DONE) {
+            var response = request.responseText;
+            document.getElementById("response").innerHTML = response;
+          }
+        }
+      };
+
+      // JS function to create Json of registeration data
+      function register(){
+        var uname = document.getElementById("regname").value;
+        var pswd = document.getElementById("reg_password").value;
+        var email = document.getElementById("reg_email").value;
+        var targt = "http://127.0.0.1:8000/users/register";
+        var dt = {username:uname, password:pswd, email:email};
+        var dat = JSON.stringify(dt);
+        submit_json(dat, targt);
+      };
+    </script>
+  </head>
+<body>
+  <center>
+    <h1>
+      Parking Reservation APIs.
+    </h1><br>
+    <h3>Note:- This template assumes API server running at http://127.0.0.1:8000 </h3>
+  </center><br><br>
+
+<!-- Reflect the API response here -->
+<hr>
+RESPONSE:- 
+<b><div id="response"></div></b>
+<br><hr><br><br>
+
+<!-- User Registration API -->
+<h3>1. User registration API</h3>
+Endpoint:- /users/register <br>
+Method = POST <br>
+Fields:- <br>
+  Username <input type="test" id="regname"> <br>
+  Password <input type="password" id="reg_password"> <br>
+  Email <input type="email" id="reg_email"> <br>
+  <button type="submit" onclick="register()"> Submit </button>
+
+<br><br>
+
+</body>
+</html>
