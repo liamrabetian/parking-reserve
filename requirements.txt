@@ -17,7 +17,7 @@ pip == 9.0.1
 #pkg-resources ##cannot find any 
 pycodestyle == 2.5.0
 pyflakes == 2.1.1
-PyJWT == 1.7.1
+PyJWT == 2.4.0
 pylint == 2.4.2
 pytz == 2019.2
 qrcode == 6.1
