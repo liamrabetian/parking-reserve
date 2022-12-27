@@ -21,7 +21,7 @@ PyJWT == 1.7.1
 pylint == 2.4.2
 pytz == 2019.2
 qrcode == 6.1
-setuptools == 39.0.1
+setuptools == 65.5.1
 six == 1.12.0
 sqlparse == 0.3.0
 toml == 0.10.0
